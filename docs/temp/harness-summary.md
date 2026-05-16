@@ -199,12 +199,6 @@ Anthropic 2025 Harness Design 的核心发现：**让一个 Agent 自我评价 �
 - **交叉校验**：PRD ↔ 技术文档差异自动发现，附带默认假设直接列澄清问题
 - **格式严格校验**：priority / platform / steps 字段自动校验，不合规直接拦截
 
-### 扩展性
-
-- **模块化 SubAgent 池**：新增模块只需增加 SubAgent 实例，不改变架构
-- **评估标准可配置**：5 维度阈值可按项目特点调整
-- **平台导入可插拔**：xmind-import 作为独立 Skill，不耦合在主流程中
-
 ---
 
 ## 与 Harness Engineering 设计原则的对照
