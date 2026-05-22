@@ -1,6 +1,34 @@
 ---
 name: prd-testcase-xmind
 description: 将 PRD 文字直接转换为 XMind 测试用例脑图。流程：Agent 合并分析 PRD+技术文档 + 交叉校验 + 澄清 → Subagent 并行生成 → 合并 + 独立 Evaluator 评估（Generator/Evaluator 分离）→ 不通过回修 → 导出 .xmind。当用户提到 PRD、测试用例、XMind、需求转测试、产品文档转测试点、测试脑图时，必须使用本技能。
+hooks:
+  PostToolUse:
+    # 合并去重完毕 → 校验 cases.json 的 priority/platform/steps 字段
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: |
+            SKILL_DIR="${CLAUDE_SKILL_DIR:-$HOME/.claude/skills/prd-testcase-xmind}"
+            for f in "$@"; do
+              case "$f" in
+                */cases.json)
+                  python3 "$SKILL_DIR/scripts/hooks/check_cases.py" "$f"
+                  ;;
+              esac
+            done
+    # Evaluator 输出评估结果 → 检查各维度 pass/fail，输出分数
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: |
+            SKILL_DIR="${CLAUDE_SKILL_DIR:-$HOME/.claude/skills/prd-testcase-xmind}"
+            for f in "$@"; do
+              case "$f" in
+                */eval_*.json|*/evaluation_*.json|*/evaluator_*.json|*/evaluator_result*.json)
+                  python3 "$SKILL_DIR/scripts/hooks/check_evaluator.py" "$f"
+                  ;;
+              esac
+            done
 ---
 
 # PRD 测试用例 → XMind

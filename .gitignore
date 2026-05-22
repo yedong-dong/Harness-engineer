@@ -5,11 +5,18 @@
 .claude/settings.local.json
 .mcp.json
 
-# Claude 会话转录（自动管理）
+# 业务数据（不提交真实需求文档和产出）
+PRD/
 
+# 生成产物
+Api/
 
-# 生成产物（可重新生成）
-PRD/*/output/
+# 临时工作文件
+findings.md
+progress.md
+task_plan.md
+docs/temp/
+docs/reference/
 
 # Python 缓存
 __pycache__/
